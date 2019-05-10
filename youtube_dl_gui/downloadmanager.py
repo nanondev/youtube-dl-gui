@@ -166,7 +166,7 @@ class DownloadItem(object):
             if key in self.progress_stats:
                 value = stats_dict[key]
 
-                if not isinstance(value, basestring) or not value:
+                if not isinstance(value, str) or not value:
                     self.progress_stats[key] = self.default_values[key]
                 else:
                     self.progress_stats[key] = value
@@ -380,7 +380,7 @@ class DownloadManager(Thread):
         # Init the custom workers thread pool
         log_lock = None if log_manager is None else Lock()
         wparams = (opt_manager, self._youtubedl_path(), log_manager, log_lock)
-        self._workers = [Worker(*wparams) for _ in xrange(opt_manager.options["workers_number"])]
+        self._workers = [Worker(*wparams) for _ in range(opt_manager.options["workers_number"])]
 
         self.start()
 
