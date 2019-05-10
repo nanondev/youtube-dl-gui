@@ -8,7 +8,7 @@ import sys
 try:
     import wx
 except ImportError as error:
-    print error
+    print(error)
     sys.exit(1)
 
 
@@ -77,7 +77,7 @@ class ListBoxWithHeaders(wx.ListBox):
         event.Skip()
 
     def _add_prefix(self, string):
-        return self.TEXT_PREFIX + string
+        return self.TEXT_PREFIX + str(string)
 
     def _remove_prefix(self, string):
         if string[:len(self.TEXT_PREFIX)] == self.TEXT_PREFIX:
