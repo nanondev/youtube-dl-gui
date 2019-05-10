@@ -15,7 +15,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(PATH)))
 try:
     from youtube_dl_gui.parsers import OptionsParser
 except ImportError as error:
-    print error
+    print(error)
     sys.exit(1)
 
 
@@ -39,7 +39,7 @@ class TestParse(unittest.TestCase):
     def check_options_parse(self, expected_options):
         options_parser = OptionsParser()
 
-        self.assertItemsEqual(options_parser.parse(self.options_dict), expected_options)
+        self.assertCountEqual(options_parser.parse(self.options_dict), expected_options)
 
     def test_parse_to_audio_requirement_bug(self):
         """Test case for the 'to_audio' requirement."""
