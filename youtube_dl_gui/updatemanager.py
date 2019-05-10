@@ -13,7 +13,7 @@ from __future__ import unicode_literals
 
 import os.path
 from threading import Thread
-from urllib2 import urlopen, URLError, HTTPError
+from urllib.request import urlopen, URLError, HTTPError
 
 from wx import CallAfter
 from wx.lib.pubsub import setuparg1
