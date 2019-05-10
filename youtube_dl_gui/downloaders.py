@@ -18,7 +18,7 @@ import signal
 import subprocess
 
 from time import sleep
-from Queue import Queue
+from queue import Queue
 from threading import Thread
 
 from .utils import convert_item
@@ -60,7 +60,7 @@ class PipeReader(Thread):
             if self._filedescriptor is not None:
                 for line in iter(self._filedescriptor.readline, str('')):
                     # Ignore ffmpeg stderr
-                    if str('ffmpeg version') in line:
+                    if 'ffmpeg version' in line:
                         ignore_line = True
 
                     if not ignore_line:
@@ -393,8 +393,8 @@ def extract_data(stdout):
     # We want to keep the spaces in order to extract filenames with
     # multiple whitespaces correctly. We also keep a copy of the old
     # 'stdout' for backward compatibility with the old code
-    stdout_with_spaces = stdout.split(' ')
-    stdout = stdout.split()
+    stdout_with_spaces = stdout.decode().split(' ')
+    stdout = stdout.decode().split()
 
     stdout[0] = stdout[0].lstrip('\r')
 
