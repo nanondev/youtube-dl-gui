@@ -22,7 +22,7 @@ import subprocess
 try:
     from twodict import TwoWayOrderedDict
 except ImportError as error:
-    print error
+    print(error)
     sys.exit(1)
 
 from .info import __appname__
@@ -53,34 +53,33 @@ def get_encoding():
     return encoding
 
 
-def convert_item(item, to_unicode=False):
+def convert_item(item, to_str37=False):
     """Convert item between 'unicode' and 'str'.
 
     Args:
         item (-): Can be any python item.
 
-        to_unicode (boolean): When True it will convert all the 'str' types
-            to 'unicode'. When False it will convert all the 'unicode'
-            types back to 'str'.
+        to_str37 (boolean): When True it will convert all the 'byte' types
+            to 'str' (in python 3.7, former unicode type). When False it will convert all the 'str' (in python 3.7)
+            types back to 'byte'.
 
     """
-    if to_unicode and isinstance(item, str):
-        # Convert str to unicode
+    if to_str37 and isinstance(item, bytes):
+        # Convert bytes to str
         return item.decode(get_encoding(), 'ignore')
 
-    if not to_unicode and isinstance(item, unicode):
-        # Convert unicode to str
+    if not to_str37 and isinstance(item, str):
+        # Convert str to bytes
         return item.encode(get_encoding(), 'ignore')
 
-    if hasattr(item, '__iter__'):
+    if hasattr(item, '__iter__') and not isinstance(item, str):
         # Handle iterables
         temp_list = []
-
         for sub_item in item:
             if isinstance(item, dict):
-                temp_list.append((convert_item(sub_item, to_unicode), convert_item(item[sub_item], to_unicode)))
+                temp_list.append((convert_item(sub_item, to_str37), convert_item(item[sub_item], to_str37)))
             else:
-                temp_list.append(convert_item(sub_item, to_unicode))
+                temp_list.append(convert_item(sub_item, to_str37))
 
         return type(item)(temp_list)
 
@@ -106,8 +105,8 @@ def convert_on_bounds(func):
 
 # See: https://github.com/MrS0m30n3/youtube-dl-gui/issues/57
 # Patch os functions to convert between 'str' and 'unicode' on app bounds
-os_sep = unicode(os.sep)
-os_getenv = convert_on_bounds(os.getenv)
+os_sep = str(os.sep)
+os_getenv = os.getenv # patch for python 3.7
 os_makedirs = convert_on_bounds(os.makedirs)
 os_path_isdir = convert_on_bounds(os.path.isdir)
 os_path_exists = convert_on_bounds(os.path.exists)
