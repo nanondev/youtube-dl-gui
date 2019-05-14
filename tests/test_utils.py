@@ -17,7 +17,7 @@ try:
 
     from youtube_dl_gui import utils
 except ImportError as error:
-    print error
+    print(error)
     sys.exit(1)
 
 
