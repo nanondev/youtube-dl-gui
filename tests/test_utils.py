@@ -118,16 +118,16 @@ class TestConvertItem(unittest.TestCase):
 
     def setUp(self):
         self.input_list_u = ["v1", "v2", "v3"]
-        self.input_list_s = [str("v1"), str("v2"), str("v3")]
+        self.input_list_s = [b"v1", b"v2", b"v3"]
 
         self.input_tuple_u = ("v1", "v2", "v3")
-        self.input_tuple_s = (str("v1"), str("v2"), str("v3"))
+        self.input_tuple_s = (b"v1", b"v2", b"v3")
 
         self.input_dict_u = {"k1": "v1", "k2": "v2"}
-        self.input_dict_s = {str("k1"): str("v1"), str("k2"): str("v2")}
+        self.input_dict_s = {b"k1": b"v1", b"k2": b"v2"}
 
     def check_iter(self, iterable, iter_type, is_unicode):
-        check_type = unicode if is_unicode else str
+        check_type = str if is_unicode else bytes
 
         iterable = utils.convert_item(iterable, is_unicode)
 
@@ -139,17 +139,17 @@ class TestConvertItem(unittest.TestCase):
 
             self.assertIsInstance(item, check_type)
 
-    def test_convert_item_unicode_str(self):
-        self.assertIsInstance(utils.convert_item("test"), str)
-
-    def test_convert_item_unicode_unicode(self):
-        self.assertIsInstance(utils.convert_item("test", True), unicode)
-
-    def test_convert_item_str_unicode(self):
-        self.assertIsInstance(utils.convert_item(str("test"), True), unicode)
+    def test_convert_item_str_bytes(self):
+        self.assertIsInstance(utils.convert_item("test"), bytes)
 
     def test_convert_item_str_str(self):
-        self.assertIsInstance(utils.convert_item(str("test")), str)
+        self.assertIsInstance(utils.convert_item("test", True), str)
+
+    def test_convert_item_bytes_str(self):
+        self.assertIsInstance(utils.convert_item(b"test", True), str)
+
+    def test_convert_item_bytes_bytes(self):
+        self.assertIsInstance(utils.convert_item(b"test"), bytes)
 
     def test_convert_item_list_empty(self):
         self.assertEqual(len(utils.convert_item([])), 0)
@@ -157,22 +157,22 @@ class TestConvertItem(unittest.TestCase):
     def test_convert_item_dict_empty(self):
         self.assertEqual(len(utils.convert_item({})), 0)
 
-    def test_convert_item_list_unicode_str(self):
+    def test_convert_item_list_str_bytes(self):
         self.check_iter(self.input_list_u, list, False)
 
-    def test_convert_item_list_str_unicode(self):
+    def test_convert_item_list_bytes_str(self):
         self.check_iter(self.input_list_s, list, True)
 
-    def test_convert_item_tuple_unicode_str(self):
+    def test_convert_item_tuple_str_bytes(self):
         self.check_iter(self.input_tuple_u, tuple, False)
 
-    def test_convert_item_tuple_str_unicode(self):
+    def test_convert_item_tuple_bytes_str(self):
         self.check_iter(self.input_tuple_s, tuple, True)
 
-    def test_convert_item_dict_unicode_str(self):
+    def test_convert_item_dict_str_bytes(self):
         self.check_iter(self.input_dict_u, dict, False)
 
-    def test_convert_item_dict_str_unicode(self):
+    def test_convert_item_dict_bytes_str(self):
         self.check_iter(self.input_dict_s, dict, True)
 
 
